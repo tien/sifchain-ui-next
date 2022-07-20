@@ -53,26 +53,23 @@ const Trade: NextPage = () => {
     () => enhancedPools.data || [],
     [enhancedPools.data],
   );
-
-  const [selectedPool, setSelectedPool] = useState<
-    typeof pools[0] | undefined
-  >();
+  const [selectedPool, setSelectedPool] = useState(pools[0]);
 
   useEffect(() => {
     if (pools && pools.length > 0) {
-      const eth = pools.find((pool) => pool.externalAsset?.symbol === "ceth");
-      setSelectedPool(eth);
+      setSelectedPool(pools[0]);
     }
   }, [pools]);
 
   const onChangePoolSelector = (token: TokenEntry) => {
     const asset = token as EnhancedRegitryAsset;
-
     const pool = pools.find(
       (pool) => pool.externalAsset?.symbol === asset.denom,
     );
     setSelectedPool(pool);
   };
+  const onChangeCollateral = (token: TokenEntry) => console.log(token);
+  const onChangePosition = (token: TokenEntry) => console.log(token);
 
   return (
     <>
@@ -204,7 +201,7 @@ const Trade: NextPage = () => {
                 <BaseTokenSelector
                   modalTitle="Collateral"
                   value={selectedPool?.asset}
-                  onChange={(token) => console.log(token)}
+                  onChange={onChangeCollateral}
                   buttonClassName="!h-auto !rounded border-none text-sm"
                   tokens={pools.map((pool) => pool.asset)}
                 />
@@ -225,7 +222,7 @@ const Trade: NextPage = () => {
                 <BaseTokenSelector
                   modalTitle="Position"
                   value={selectedPool?.asset}
-                  onChange={(token) => console.log(token)}
+                  onChange={onChangePosition}
                   buttonClassName="!h-auto !rounded border-none text-sm"
                   readonly
                   tokens={pools.map((pool) => pool.asset)}
